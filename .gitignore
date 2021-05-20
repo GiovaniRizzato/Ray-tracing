@@ -1,1 +1,8 @@
+//Ignore C++ files
+bin/
+obj/
+
+//Ignore Code::blocks files
 *.cbp
+*.depend
+*.layout
