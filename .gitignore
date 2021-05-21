@@ -6,3 +6,7 @@ obj/
 *.cbp
 *.depend
 *.layout
+
+
+//Ignore Image Tests files
+*.ppm
