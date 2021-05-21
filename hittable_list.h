@@ -10,7 +10,7 @@ using std::shared_ptr;
 using std::make_shared;
 
 class hittable_list : public hittable {
-public:
+  public:
     hittable_list() {}
     hittable_list(shared_ptr<hittable> object) {
         add(object);
@@ -26,7 +26,7 @@ public:
     virtual bool hit(
         const ray& r, double t_min, double t_max, hit_record& rec) const override;
 
-public:
+  public:
     std::vector<shared_ptr<hittable>> objects;
 };
 

@@ -4,7 +4,7 @@
 #include "rtweekend.h"
 
 class camera {
-public:
+  public:
     camera() {
         auto aspect_ratio = 16.0 / 9.0;
         auto viewport_height = 2.0;
@@ -21,7 +21,7 @@ public:
         return ray(origin, lower_left_corner + u*horizontal + v*vertical - origin);
     }
 
-private:
+  private:
     point3 origin;
     point3 lower_left_corner;
     vec3 horizontal;
