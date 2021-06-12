@@ -6,27 +6,41 @@
 #include "sphere.h"
 #include "material.h"
 #include "moving_sphere.h"
+#include "aarect.h"
 
 hittable_list moving_test(point3 p1, point3 p2, double numeroFrams) {
     hittable_list world;
 
-    auto checker = make_shared<checker_texture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+    auto material_ground = make_shared<lambertian>(make_shared<image_texture>("earthmap.jpg"));
+    //auto material_ground = make_shared<noise_texture>(1);
+    //auto material_ground = make_shared<checker_texture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
     auto material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
     auto material_left   = make_shared<dielectric>(1.5);
+    auto material_left_inner   = make_shared<dielectric>(-1.5);
     auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
+    auto difflight = make_shared<diffuse_light>(color(4,4,4));
 
-    world.add(make_shared<sphere>(point3(0,-1000,0), 1000, make_shared<lambertian>(checker)));
-    world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
-    world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
-    world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0), -0.45, material_left));
-    world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
-
-    world.add(make_shared<moving_sphere>(
-                  p1, p2, 0.0, numeroFrams, 1.0, material_center));
-    world.add(make_shared<moving_sphere>(
-                  p2, p1, 0.0, numeroFrams, 0.7, material_right));
+    world.add(make_shared<sphere>(point3(0,     -1000,    0), 1000, material_center));
+    world.add(make_shared<sphere>(point3( 0.0,    0.5,  0.0),   0.5, material_ground ));
+    world.add(make_shared<sphere>(point3(-1.0,    0.5,  0.0),   0.5, material_left));
+    world.add(make_shared<sphere>(point3(-1.0,    0.5,  0.0), -0.45, material_left_inner));
+    world.add(make_shared<sphere>(point3( 1.0,    0.5,  0.0),   0.5, material_right));
+    world.add(make_shared<xy_rect>(3, 5, 1, 3, -2, difflight));
 
     return world;
+}
+
+hittable_list simple_light() {
+    hittable_list objects;
+
+    auto pertext = make_shared<noise_texture>(4);
+    objects.add(make_shared<sphere>(point3(0,-1000,0), 1000, make_shared<lambertian>(pertext)));
+    objects.add(make_shared<sphere>(point3(0,2,0), 2, make_shared<lambertian>(pertext)));
+
+    auto difflight = make_shared<diffuse_light>(color(4,4,4));
+    objects.add(make_shared<xy_rect>(3, 5, 1, 3, -2, difflight));
+
+    return objects;
 }
 
 hittable_list treeball_scene() {
