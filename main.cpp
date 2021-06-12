@@ -45,26 +45,27 @@ color ray_color(const ray& r, const color& background, const hittable& world, in
 int main() {
 
     // Image
-    auto aspect_ratio = 16.0 / 9.0;
-    int image_width = 500;
-    int samples_per_pixel = 60;
+    auto aspect_ratio = 1.0;
+    int image_width = 600;
+    int samples_per_pixel = 200;
     const int max_depth = 50;
+    auto background = color(0,0,0);
 
     // Camera
-    point3 lookfrom(26,3,6);
-    point3 lookat(0,2,0);
+    point3 lookfrom(278, 278, -800);
+    point3 lookat(278, 278, 0);
     vec3 vup(0,1,0);
+    double vfov = 40.0;
     auto dist_to_focus = (lookfrom-lookat).length();
     auto aperture = 0.01;
     int image_height = static_cast<int>(image_width / aspect_ratio);
 
     //Animation
-    double tempoTotal = 1.1;
+    double tempoTotal = 1.0;
     int framesPorSegundo = 1;
 
     // World
-    color background(0,0,0);
-    auto world = simple_light();
+    auto world = cornell_box();
     //auto world = moving_test(point3(0.0, 0.0, -1.0), point3(0.0, 0.0, 1.0), tempoTotal);
 
     int numeroTotalFrames = (int)(tempoTotal * (double)framesPorSegundo);
@@ -77,7 +78,7 @@ int main() {
         imagem.open (fileName);
 
         // Render
-        camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, tempoPorFrame * n_frame, tempoPorFrame * (n_frame + 1.0));
+        camera cam(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, tempoPorFrame * n_frame, tempoPorFrame * (n_frame + 1.0));
         std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
         imagem << "P3\n" << image_width << " " << image_height << "\n255\n";
 
