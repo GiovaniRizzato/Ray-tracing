@@ -44,15 +44,25 @@ color ray_color(const ray& r, const color& background, const hittable& world, in
 
 int main() {
 
+    /* Final
+    aspect_ratio = 1.0;
+    image_width = 800;
+    samples_per_pixel = 10000;
+    background = color(0,0,0);
+    lookfrom = point3(478, 278, -600);
+    lookat = point3(278, 278, 0);
+    vfov = 40.0;
+    */
+
     // Image
     auto aspect_ratio = 1.0;
-    int image_width = 600;
-    int samples_per_pixel = 200;
+    int image_width = 400;
+    int samples_per_pixel = 500;
     const int max_depth = 50;
     auto background = color(0,0,0);
 
     // Camera
-    point3 lookfrom(278, 278, -800);
+    point3 lookfrom(478, 278, -600);
     point3 lookat(278, 278, 0);
     vec3 vup(0,1,0);
     double vfov = 40.0;
@@ -61,11 +71,11 @@ int main() {
     int image_height = static_cast<int>(image_width / aspect_ratio);
 
     //Animation
-    double tempoTotal = 1.0;
-    int framesPorSegundo = 1;
+    double tempoTotal = 3.0;
+    int framesPorSegundo = 12;
 
     // World
-    auto world = cornell_box();
+    auto world = final_scene(tempoTotal);
     //auto world = moving_test(point3(0.0, 0.0, -1.0), point3(0.0, 0.0, 1.0), tempoTotal);
 
     int numeroTotalFrames = (int)(tempoTotal * (double)framesPorSegundo);
@@ -73,7 +83,7 @@ int main() {
     for(double n_frame=0.0; n_frame<=(numeroTotalFrames - 1); n_frame+= 1.0) {
 
         // File
-        std::string fileName = "example" + std::to_string(n_frame) + ".ppm";
+        std::string fileName = "example" + std::to_string((int) n_frame) + ".ppm";
         std::ofstream imagem;
         imagem.open (fileName);
 
